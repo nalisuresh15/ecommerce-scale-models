@@ -1,0 +1,5 @@
+/* minimal styling */
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; }
+.container { max-width: 1100px; margin: 0 auto; padding: 16px; }
