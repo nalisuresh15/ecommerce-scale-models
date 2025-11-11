@@ -36,9 +36,7 @@ const Navbar = () => {
 
           <Link to="/cart" style={styles.link}>
             🛒 Cart
-            {user && (
-              <span style={styles.badge}>{cartCount}</span>
-            )}
+            {user && <span style={styles.badge}>{cartCount}</span>}
           </Link>
 
           <Link to="/admin/top-rated" style={{ ...styles.link, color: "#fff" }}>
@@ -75,7 +73,7 @@ const Navbar = () => {
                   </Link>
                   <button
                     onClick={handleLogout}
-                    style={{ ...styles.dropdownItem, color: "#ef4444" }}
+                    style={{ ...styles.dropdownItem, color: "#fff" }}
                   >
                     🚪 Logout
                   </button>
@@ -142,23 +140,28 @@ const styles = {
   },
   dropdown: {
     position: "absolute",
-    top: "38px",
+    top: "42px",
     right: 0,
     backgroundColor: "#1f2937",
     borderRadius: "10px",
     boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
     zIndex: 1100,
-    minWidth: "180px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "8px 12px",
+    minWidth: "auto",
+    gap: "18px",
   },
   dropdownItem: {
-    display: "block",
-    padding: "10px 14px",
-    color: "#e5e7eb",
+    color: "#f9fafb",
     textDecoration: "none",
     background: "transparent",
-    textAlign: "left",
+    border: "none",
     cursor: "pointer",
     fontSize: "15px",
+    fontWeight: "500",
+    transition: "color 0.3s ease",
   },
 };
 

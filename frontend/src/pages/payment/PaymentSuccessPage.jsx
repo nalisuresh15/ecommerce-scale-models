@@ -69,7 +69,7 @@ const PaymentSuccessPage = () => {
           Your payment of <strong>₹{total}</strong> using <strong>{method}</strong> has been processed successfully.
         </p>
         <p style={{ fontSize: 14, color: "#6b7280", marginBottom: 20 }}>
-          You will also receive an SMS confirmation shortly.
+          You will also receive an E-MAIL confirmation shortly.
         </p>
 
         {/* Continue Shopping Button */}

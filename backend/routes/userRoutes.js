@@ -1,4 +1,3 @@
-// backend/routes/userRoutes.js
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
@@ -11,6 +10,7 @@ const {
   removeFromCart,
   getUserProfile,
   updateUserProfile,
+  getUserRatings, // ✅ NEW
 } = require("../controllers/userController");
 
 // Multer setup
@@ -40,5 +40,8 @@ router.get("/favorites", getFavorites);
 router.post("/cart", addToCart);
 router.get("/cart", getCart);
 router.delete("/cart", removeFromCart);
+
+// ✅ NEW: Get user’s submitted ratings
+router.get("/my-ratings", getUserRatings);
 
 module.exports = router;

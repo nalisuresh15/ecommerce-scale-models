@@ -11,6 +11,7 @@ const orderSchema = new mongoose.Schema({
   ],
   totalAmount: Number,
   status: { type: String, default: "Pending" },
+  emailSent: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });
 

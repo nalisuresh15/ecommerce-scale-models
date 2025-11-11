@@ -1,6 +1,7 @@
 // backend/controllers/userController.js
 const User = require("../models/User");
 const Product = require("../models/Product");
+const Rating = require("../models/Rating"); // ✅ Added
 const fs = require("fs");
 const path = require("path");
 
@@ -40,7 +41,10 @@ const updateUserProfile = async (req, res) => {
     await user.save();
     res.json({ message: "✅ Profile updated successfully!", user });
   } catch (err) {
-    res.status(500).json({ message: "Failed to update profile", error: err.message });
+    res.status(500).json({
+      message: "Failed to update profile",
+      error: err.message,
+    });
   }
 };
 
@@ -61,7 +65,10 @@ const toggleFavorite = async (req, res) => {
 
     res.json({ message: "✅ Favorites updated", favorites: user.favorites });
   } catch (err) {
-    res.status(500).json({ message: "Failed to update favorites", error: err.message });
+    res.status(500).json({
+      message: "Failed to update favorites",
+      error: err.message,
+    });
   }
 };
 
@@ -71,7 +78,10 @@ const getFavorites = async (req, res) => {
     const user = await User.findById(req.user.id).populate("favorites");
     res.json(user.favorites || []);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch favorites", error: err.message });
+    res.status(500).json({
+      message: "Failed to fetch favorites",
+      error: err.message,
+    });
   }
 };
 
@@ -81,10 +91,12 @@ const addToCart = async (req, res) => {
     const { productId, qty } = req.body;
     const user = await User.findById(req.user.id);
     const product = await Product.findById(productId);
-    if (!user || !product) return res.status(404).json({ message: "User or Product not found" });
+    if (!user || !product)
+      return res.status(404).json({ message: "User or Product not found" });
 
-    // find if product already exists in cart
-    const existing = user.cart.find((item) => item.product.toString() === productId);
+    const existing = user.cart.find(
+      (item) => item.product.toString() === productId
+    );
 
     if (existing) {
       existing.qty = qty || existing.qty;
@@ -96,7 +108,10 @@ const addToCart = async (req, res) => {
     const populatedUser = await User.findById(req.user.id).populate("cart.product");
     res.json(populatedUser.cart);
   } catch (err) {
-    res.status(500).json({ message: "Failed to update cart", error: err.message });
+    res.status(500).json({
+      message: "Failed to update cart",
+      error: err.message,
+    });
   }
 };
 
@@ -106,7 +121,10 @@ const getCart = async (req, res) => {
     const user = await User.findById(req.user.id).populate("cart.product");
     res.json({ items: user.cart || [] });
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch cart", error: err.message });
+    res.status(500).json({
+      message: "Failed to fetch cart",
+      error: err.message,
+    });
   }
 };
 
@@ -125,7 +143,38 @@ const removeFromCart = async (req, res) => {
     const populatedUser = await User.findById(req.user.id).populate("cart.product");
     res.json({ items: populatedUser.cart });
   } catch (err) {
-    res.status(500).json({ message: "Failed to remove item", error: err.message });
+    res.status(500).json({
+      message: "Failed to remove item",
+      error: err.message,
+    });
+  }
+};
+
+// ✅ Get all ratings by logged-in user
+const getUserRatings = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const ratings = await Rating.find({ user: userId })
+      .populate("product", "name price image")
+      .sort({ createdAt: -1 });
+
+    if (!ratings.length)
+      return res.json([]);
+
+    res.json(
+      ratings.map((r) => ({
+        product: r.product?._id,
+        rating: r.rating,
+        comment: r.comment,
+        createdAt: r.createdAt,
+      }))
+    );
+  } catch (err) {
+    console.error("❌ Error fetching user ratings:", err);
+    res.status(500).json({
+      message: "Failed to fetch user ratings",
+      error: err.message,
+    });
   }
 };
 
@@ -137,4 +186,5 @@ module.exports = {
   addToCart,
   getCart,
   removeFromCart,
+  getUserRatings, // ✅ Added export
 };

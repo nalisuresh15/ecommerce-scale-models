@@ -5,6 +5,7 @@ const {
   getMyOrders,
   getOrderById,
   getTrendingProducts,
+  cancelOrder,
 } = require("../controllers/orderController");
 
 const router = express.Router();
@@ -12,13 +13,16 @@ const router = express.Router();
 // Create a new order
 router.post("/", protect, createOrder);
 
-// Get logged-in user's orders
+// Get user's orders
 router.get("/myorders", protect, getMyOrders);
 
-// Get trending products (no auth needed)
+// Cancel order (with reason + email)
+router.delete("/:id/cancel", protect, cancelOrder);
+
+// Get trending products
 router.get("/trending", getTrendingProducts);
 
-// Get single order by ID
+// Get single order
 router.get("/:id", protect, getOrderById);
 
 module.exports = router;
